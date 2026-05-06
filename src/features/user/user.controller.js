@@ -30,54 +30,49 @@ export default class UserController {
             });
         }
     }
+signin = async (req, res) => {
+    try {
+        // console.log("BODY:", req.body); // 🔥 debug
 
-    signin = async (req, res) => {
-        try {
-
-            const { email, password } = req.body;
-
-            const result = await this.userRepository.signin(email);
-
-            console.log("User found:", result);
-
-            // ✅ check existing user
-            // const result = UserModel.signin(email, password);
-
-            if (!result) {
-                return res.status(401).send("Email not found");
-            }
-
-            console.log("Entered password:", password);
-            console.log("Stored password:", result.password);
-
-            const isMatch = await bcrypt.compare(password, result.password);
-
-            console.log("Password match:", isMatch);
-
-            if (!isMatch) {
-                return res.status(401).send("Incorrect Credentials");
-            }
-
-            const token = jwt.sign(
-                {
-                    userID: result._id,
-                    email: result.email
-
-                },
-                process.env.JWT_SECRET,
-                {
-                    expiresIn: "10h"
-                }
-            );
-
-            return res.status(200).json({
-                success: true,
-                token: token
-            });
-
-        } catch (err) {
-            console.log(err);
-            return res.status(500).send("Something went wrong");
+        if (!req.body) {
+            return res.status(400).send("Request body missing");
         }
+
+        const { email, password } = req.body;
+
+        if (!email || !password) {
+            return res.status(400).send("Email and password required");
+        }
+
+        const result = await this.userRepository.signin(email);
+
+        if (!result) {
+            return res.status(401).send("Email not found");
+        }
+
+        const isMatch = await bcrypt.compare(password, result.password);
+
+        if (!isMatch) {
+            return res.status(401).send("Incorrect Credentials");
+        }
+
+        const token = jwt.sign(
+            {
+                userID: result._id,
+                email: result.email
+            },
+            process.env.JWT_SECRET,
+            { expiresIn: "10h" }
+        );
+
+        return res.status(200).json({
+            success: true,
+            token
+        });
+
+    } catch (err) {
+        console.log("ERROR:", err);
+        return res.status(500).send(err.message);
     }
+};
 }

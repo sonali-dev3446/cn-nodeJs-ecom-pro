@@ -49,8 +49,8 @@ server.use("/api-docs", swagger.serve, swagger.setup(apiDocs))
 server.use(express.urlencoded({ extended: true }));
 server.use('/api/users', userRouter)
 
-server.use(bodyParser.json());
-server.use(bodyParser.urlencoded({ extended: true }));
+// server.use(bodyParser.json());
+// server.use(bodyParser.urlencoded({ extended: true }));
 
 server.use(loggerMiddleware);
 
@@ -73,7 +73,23 @@ server.use((req, res) => {
 
 const PORT = process.env.PORT || 4500;
 
-server.listen(PORT, () => {
-   console.log(`Server running on port ${PORT}`);
-    connectToMongoDB();
-})
+// server.listen(PORT, () => {
+//    console.log(`Server running on port ${PORT}`);
+//     connectToMongoDB();
+// })
+
+// for prod
+const startServer = async () => {
+  try {
+    await connectToMongoDB(); // wait for DB
+
+    server.listen(PORT, () => {
+      console.log(`Server running on port ${PORT}`);
+    });
+
+  } catch (err) {
+    console.error("DB connection failed", err);
+  }
+};
+
+startServer();

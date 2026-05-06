@@ -1,0 +1,5 @@
+[33mcommit 80f27ff64a9316a9642909f9ebf2b951c905ee78[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m
+Author: sonali agrawal <sagrawal3446@gmail.com>
+Date:   Wed May 6 21:19:03 2026 +0530
+
+    fix cors config
