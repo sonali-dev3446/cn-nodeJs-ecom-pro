@@ -36,7 +36,9 @@ const server = express();
 //CORS policy configuration using npm cors library
 // provide anything specific you want
 var corsOptions = {
-    origins: 'http://localhost:4500'
+    // origins: 'http://localhost:4500'
+        origin: '*'   // allow all origins (good for testing)
+
 }
 server.use(cors(corsOptions));
 
@@ -66,7 +68,7 @@ server.get("/", (req, res) => {
 
 //4. Middleware to handle 404  req.
 server.use((req, res) => {
-    res.status(404).send("API not found. Please check our documentation for more information at http://localhost:4500/api-docs");
+    res.status(404).send("API not found. Check /api-docs");
 })
 
 const PORT = process.env.PORT || 4500;
