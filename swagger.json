@@ -1,0 +1,261 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "description": "API for E-commerce application",
+    "title": "E-commerce API"
+  },
+  "host": "localhost:4500",
+  "basePath": "/",
+  "schemes": ["http"],
+  "paths": {
+    
+    "/api/users/signup": {
+      "post": {
+        "summary": "Signup",
+        "description": "Register a new user",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "User details",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": { "type": "string" },
+                "email": { "type": "string" },
+                "password": { "type": "string" },
+                "type": { "type": "string", "example": "customer" }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": { "description": "User created successfully" },
+          "500": { "description": "Server error" }
+        }
+      }
+    },
+
+    "/api/users/signin": {
+      "post": {
+        "summary": "Login",
+        "description": "User login to get token",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "User credentials",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "email": { "type": "string" },
+                "password": { "type": "string" }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Login successful (returns JWT token)" },
+          "401": { "description": "Invalid credentials" }
+        }
+      }
+    },
+
+    "/api/products": {
+      "get": {
+        "summary": "Get all products",
+        "description": "Fetch all products",
+        "produces": ["application/json"],
+        "responses": {
+          "200": { "description": "List of products" }
+        }
+      },
+      "post": {
+        "summary": "Add product",
+        "description": "Create a new product (with image upload)",
+        "consumes": ["multipart/form-data"],
+        "parameters": [
+          {
+            "in": "formData",
+            "name": "name",
+            "type": "string",
+            "required": true
+          },
+          {
+            "in": "formData",
+            "name": "price",
+            "type": "number",
+            "required": true
+          },
+          {
+            "in": "formData",
+            "name": "sizes",
+            "type": "string",
+            "description": "Comma separated values (e.g. S,M,L)"
+          },
+          {
+            "in": "formData",
+            "name": "imageUrl",
+            "type": "file"
+          }
+        ],
+        "responses": {
+          "201": { "description": "Product created" }
+        }
+      }
+    },
+
+    "/api/products/{id}": {
+      "get": {
+        "summary": "Get product by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": { "description": "Product found" },
+          "404": { "description": "Product not found" }
+        }
+      }
+    },
+
+    "/api/products/filter": {
+      "get": {
+        "summary": "Filter products",
+        "parameters": [
+          { "name": "name", "in": "query", "type": "string" },
+          { "name": "minPrice", "in": "query", "type": "number" },
+          { "name": "maxPrice", "in": "query", "type": "number" },
+          { "name": "category", "in": "query", "type": "string" }
+        ],
+        "responses": {
+          "200": { "description": "Filtered products" }
+        }
+      }
+    },
+
+    "/api/products/rate": {
+      "post": {
+        "summary": "Rate product",
+        "description": "Rate a product (JWT required)",
+        "consumes": ["application/json"],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Authorization",
+            "required": true,
+            "type": "string",
+            "description": "Bearer token"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "productID": { "type": "string" },
+                "rating": { "type": "number", "example": 4 }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Rating added/updated" },
+          "401": { "description": "Unauthorized" }
+        }
+      }
+    },
+    "/api/cartItems": {
+  "post": {
+    "summary": "Add item to cart",
+    "description": "Add product to cart or increase quantity if already exists",
+    "consumes": ["application/json"],
+    "produces": ["application/json"],
+    "parameters": [
+      {
+        "in": "header",
+        "name": "Authorization",
+        "required": true,
+        "type": "string",
+        "description": "Bearer token"
+      },
+      {
+        "in": "body",
+        "name": "body",
+        "required": true,
+        "schema": {
+          "type": "object",
+          "properties": {
+            "productID": { "type": "string" },
+            "quantity": { "type": "number", "example": 2 }
+          }
+        }
+      }
+    ],
+    "responses": {
+      "201": { "description": "Item added to cart" },
+      "401": { "description": "Unauthorized" }
+    }
+  },
+
+  "get": {
+    "summary": "Get cart items",
+    "description": "Fetch all cart items for logged-in user",
+    "produces": ["application/json"],
+    "parameters": [
+      {
+        "in": "header",
+        "name": "Authorization",
+        "required": true,
+        "type": "string",
+        "description": "Bearer token"
+      }
+    ],
+    "responses": {
+      "200": { "description": "List of cart items" },
+      "401": { "description": "Unauthorized" }
+    }
+  }
+},
+
+"/api/cartItems/{id}": {
+  "delete": {
+    "summary": "Delete cart item",
+    "description": "Delete a cart item by ID (only for logged-in user)",
+    "parameters": [
+      {
+        "name": "Authorization",
+        "in": "header",
+        "required": true,
+        "type": "string",
+        "description": "Bearer token"
+      },
+      {
+        "name": "id",
+        "in": "path",
+        "required": true,
+        "type": "string",
+        "description": "Cart item ID"
+      }
+    ],
+    "responses": {
+      "200": { "description": "Item deleted successfully" },
+      "404": { "description": "Item not found" },
+      "401": { "description": "Unauthorized" }
+    }
+  }
+}
+
+  }
+}

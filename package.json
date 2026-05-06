@@ -1,0 +1,29 @@
+{
+  "name": "e-com-api",
+  "version": "1.0.0",
+  "description": "APIs for E-com application",
+  "license": "ISC",
+  "author": "",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "body-parser": "^2.2.2",
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "grunt": "^1.6.2",
+    "jsonwebtoken": "^9.0.3",
+    "mongodb": "^7.2.0",
+    "mongoose": "^9.6.1",
+    "multer": "^2.1.1",
+    "nodemon": "^3.1.14",
+    "swagger-ui-express": "^5.0.1"
+  },
+  "devDependencies": {
+    "grunt-contrib-uglify": "^5.2.2"
+  }
+}

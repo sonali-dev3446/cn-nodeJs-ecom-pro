@@ -1,0 +1,54 @@
+check list:Products
+ProductController
+1.Get Products
+2. Add a Products
+3. Get one Products
+4.Rate Products -
+    1.valiadate use
+    2. valudate product
+    3. check if rating avaialbe
+        - if no  create add new  rating
+        - if yes then update existing rating
+    
+
+ADD ITEM TO cart
+get items to cart of that user 
+remove items from cart from that user only
+update quantity
+
+userController
+
+Signup  - Email, Password , typeof USer(customer, seller)
+signin(email, Password)
+
+
+Setup Authentication
+1.basic Authentication
+2. JWT 
+
+handle 404 - add middelware if path not matched
+
+link for swagger - api doc
+
+http://localhost:4500/api-docs/#/default
+
+
+mongodb methods used :
+
+insertOne()
+findOne()
+updateOne()
+deleteOne()
+
+
+You’ve now worked with:
+
+✅ Express Routing
+✅ MVC Structure
+✅ Multer Uploads
+✅ JWT Auth
+✅ Basic Auth
+✅ Middleware
+✅ MongoDB Atlas
+✅ Async/Await Debugging
+✅ Postman API Testing
